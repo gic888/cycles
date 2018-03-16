@@ -1,0 +1,23 @@
+On hub
+(  Model Name:	MacBook Pro
+   Model Identifier:	MacBookPro12,1
+   Processor Name:	Intel Core i5
+   Processor Speed:	2.7 GHz
+   Number of Processors:	1
+   Total Number of Cores:	2
+   L2 Cache (per Core):	256 KB
+   L3 Cache:	3 MB
+   Memory:	8 GB
+)
+
+Python networkx
+
+graph20: 0m0.681s
+graph100: segfault in 15m30.834s
+graph200: segfault in 6m0.527s
+
+
+Python naive
+
+graph20: 0m0.064s
+graph30: 0m2.005s

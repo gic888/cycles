@@ -1,1 +1,8 @@
-find all simple cycles in a directed graph 
+Find all simple cycles in a directed graph
+
+Python's networkx.simple_cycles is the reference implementation. A small graph (graph20) and a large graph
+(graph200) are provided in the data directory, stored in networkx's adjacency_list format. This format is one
+line for each node, with each line being a space separated list of node ids. The first id is the id of the node,
+and the subsequent ids are the ids of each target of an outgoing edge from the node.
+
+The provided graph20 has 89 cycles
