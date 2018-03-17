@@ -60,3 +60,26 @@ Kotlin (deferred)
 
 Kotlin (seq)
 35: 0m31.812s
+
+On linux laptop  Intel(R) Core(TM) i7-5600U CPU @ 2.60GHz 8GB
+
+Python networkx
+35:	2m33.024s
+
+Kotlin deferred
+35: 0m29.529s
+
+Kotlin seq
+35: 0m42.462s
+
+
+On linux server
+
+Python networkx
+35:
+
+Kotlin deferred
+35:
+
+Kotlin seq
+35:
