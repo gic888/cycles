@@ -13,6 +13,8 @@ On hub
 Python networkx
 
 graph20: 0m0.681s
+graph30: 0m0.524s (2224)
+graph35: 4m20.716s (6973630)
 graph100: segfault in 15m30.834s
 graph200: segfault in 6m0.527s
 
@@ -20,4 +22,8 @@ graph200: segfault in 6m0.527s
 Python naive
 
 graph20: 0m0.064s
-graph30: 0m2.005s
+graph30: 0m0.120s
+graph35:
+
+Kotlin
+graph35: 	1m9.853s

@@ -1,0 +1,41 @@
+
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.2.30"
+    id 'application'
+}
+
+kotlin { experimental { coroutines 'enable' } }
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+mainClassName = 'App'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
+    testCompile "org.jetbrains.kotlin:kotlin-test"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+}
+
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
