@@ -36,6 +36,8 @@ graph40: > 50 min
 Kotlin (channels)
 graph20: 0m1.860s
 graph30: 0m1.945s
-graph35:
-graph37:
-graph40:
+graph35: hideous (>13m and throws exceptions
+
+Kotlin (async)
+graph35: 1m14.727s
+
