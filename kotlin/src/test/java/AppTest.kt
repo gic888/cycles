@@ -10,5 +10,6 @@ class AppTest {
     fun testSmallGraph() = runBlocking<Unit> {
         val graph = readGraph("../data/graph20.adj")
         assert(App.countCycles(graph) == 89)
+        println("count correct")
     }
 }

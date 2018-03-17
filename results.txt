@@ -15,8 +15,8 @@ Python networkx
 graph20: 0m0.681s
 graph30: 0m0.524s (2224)
 graph35: 4m20.716s (6973630)
-graph100: segfault in 15m30.834s
-graph200: segfault in 6m0.527s
+
+graph40: segfault
 
 
 Python naive
