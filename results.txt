@@ -43,7 +43,20 @@ Kotlin (Callables)
 grahp35: 0m33.511s
 graph37: 0m33.571s
 
-Kotlin (using deffered rather than callable)
+Kotlin (using deferred rather than callable)
 graph37: 0m34.971s
 
 
+On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
+
+Python networkx
+35: 2m10.714s
+
+Python naive
+35: 4m28.689s
+
+Kotlin (deferred)
+35: 0m18.629s
+
+Kotlin (seq)
+35: 0m31.812s
