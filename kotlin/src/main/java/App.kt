@@ -1,3 +1,6 @@
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.runBlocking
 import java.io.File
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
@@ -19,13 +22,12 @@ object App {
         println(countCycles(graph))
     }
 
-    fun countCycles(graph: Graph): Int {
-        val executor = Executors.newWorkStealingPool()
-        val callables = graph.vertices().map { vid -> Callable<Int>
-            { buildSequence { findCycles(listOf(vid), graph)}.count() }
-        }.toMutableList()
-        val ln: List<Int> = executor.invokeAll(callables).map { it.get() }
-        return ln.sum()
+    fun countCycles(graph: Graph): Int = runBlocking {
+        val callables = graph.vertices().map { vid -> async(CommonPool) {
+            buildSequence { findCycles(listOf(vid), graph)}.count()
+        } }
+        val ln: List<Int> = callables.map { it.await() }
+        ln.sum()
     }
 }
 

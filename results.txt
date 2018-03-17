@@ -33,15 +33,17 @@ graph35: 0m51.490s
 graph37: 0m31.263s (10251413)
 graph40: > 50 min
 
-Kotlin (channels)
-graph20: 0m1.860s
-graph30: 0m1.945s
+Kotlin (channels) -- bad implementation
 graph35: hideous (>13m and throws exceptions
 
-Kotlin (async)
+Kotlin (async)  -- bad implementation
 graph35: 1m14.727s
 
 Kotlin (Callables)
 grahp35: 0m33.511s
-graph37: 
+graph37: 0m33.571s
+
+Kotlin (using deffered rather than callable)
+graph37: 0m34.971s
+
 
