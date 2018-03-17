@@ -1,10 +1,6 @@
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.channels.count
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
 import java.io.File
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 import kotlin.coroutines.experimental.SequenceBuilder
 import kotlin.coroutines.experimental.buildSequence
 
@@ -17,48 +13,24 @@ typealias Path = List<ID>
  */
 object App {
     @JvmStatic
-    fun main(args: Array<String>) = runBlocking<Unit> {
-        val n = if (args.isNotEmpty()) args[0] else "35"
+    fun main(args: Array<String>) {
+        val n = if (args.isNotEmpty()) args[0] else "20"
         val graph = readGraph("../data/graph$n.adj")
         println(countCycles(graph))
     }
 
-    suspend fun countCycles(graph: Graph): Int {
-        // return findCycles(graph).count()
-        var n = 0
-        findCyclesSeq(graph).forEach {
-            n += it.await().count()
-        }
-        return n
+    fun countCycles(graph: Graph): Int {
+        val executor = Executors.newWorkStealingPool()
+        val callables = graph.vertices().map { vid -> Callable<Int>
+            { buildSequence { findCycles(listOf(vid), graph)}.count() }
+        }.toMutableList()
+        val ln: List<Int> = executor.invokeAll(callables).map { it.get() }
+        return ln.sum()
     }
 }
 
-suspend fun findCyclesSeq(graph: Graph): Sequence<Deferred<Sequence<Path>>> =
-    graph.vertices().map { async { findCyclesSeq(listOf(it), graph) } }.asSequence()
 
-
-suspend fun findCyclesSeq(path: Path, graph: Graph): Sequence<Path> {
-    if (path.isEmpty()) {
-        return sequenceOf()
-    }
-    val jobs = mutableListOf<Sequence<Path>>()
-    for (tid in graph.edges(path.last())) {
-        if (tid == path.first()) {
-            jobs.add( sequenceOf(path) )
-        } else if (tid > path.first() && !path.contains(tid)) {
-            jobs.add( findCyclesSeq(path + listOf(tid), graph) )
-        }
-    }
-    return jobs.flatMap { it.asIterable() }.asSequence()
-}
-
-suspend fun findCycles(graph: Graph): Sequence<List<ID>> = buildSequence {
-    for (vertex in graph.vertices()) {
-        findCycles(listOf(vertex), graph)
-    }
-}
-
-suspend fun SequenceBuilder<List<ID>>.findCycles(path: List<ID>, graph: Graph)  {
+suspend fun SequenceBuilder<Path>.findCycles(path: Path, graph: Graph)  {
     if (path.isEmpty()) {
         return
     }
@@ -77,18 +49,18 @@ fun readGraph(path: String): Graph =
                 .filter { !it.startsWith("#") }
                 .filter { !it.isEmpty() }
                 .map { it.split(Regex("\\s"))}
-                .map { it[0] to it.subList(1, it.size).asSequence()
+                .map { it[0] to it.subList(1, it.size)
                 }.toMap())
 
 
 
 interface Graph {
-    fun vertices(): Sequence<ID>
-    fun edges(vertex: ID): Sequence<ID>
+    fun vertices(): Path
+    fun edges(vertex: ID): Path
 }
 
-class MapGraph(private val vs: Map<ID, Sequence<ID>>): Graph {
-    override fun vertices(): Sequence<ID> = vs.keys.asSequence()
+class MapGraph(private val vs: Map<ID, Path>): Graph {
+    override fun vertices(): Path = vs.keys.toList()
 
-    override fun edges(vertex: ID): Sequence<ID> = vs[vertex] ?: sequenceOf()
+    override fun edges(vertex: ID): Path = vs[vertex] ?: listOf()
 }

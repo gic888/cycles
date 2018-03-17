@@ -41,3 +41,7 @@ graph35: hideous (>13m and throws exceptions
 Kotlin (async)
 graph35: 1m14.727s
 
+Kotlin (Callables)
+grahp35: 0m33.511s
+graph37: 
+
