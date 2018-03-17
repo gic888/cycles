@@ -10,5 +10,5 @@ if __name__ == '__main__':
     nx.read_adjlist('../data/graph' + n + '.adj', create_using=g)
     cycles = list(nx.simple_cycles(g))
     print(len(cycles))
-    # for x in sorted(cycles):
-    #    print(" ".join(x))
+    for x in sorted(cycles):
+        print(" ".join(x))

@@ -61,7 +61,7 @@ Kotlin (deferred)
 Kotlin (seq)
 35: 0m31.812s
 
-On linux laptop  Intel(R) Core(TM) i7-5600U CPU @ 2.60GHz 8GB
+On thinkpad 450s (linux laptop  Intel(R) Core(TM) i7-5600U CPU @ 2.60GHz 8GB)
 
 Python networkx
 35:	2m33.024s
@@ -72,8 +72,22 @@ Kotlin deferred
 Kotlin seq
 35: 0m42.462s
 
+Go sync
+35: 0m51.016s
 
-On linux server
+
+On symbolscope local (linux server  Intel(R) Pentium(R) CPU G2030 @ 3.00GHz  8GB)
+
+Python networkx
+35:	3m20.748s
+
+Kotlin deferred
+35:	0m54.164s
+
+Kotlin seq
+35:	0m54.209s
+
+On symbolscope AWS (linux server on AWS micro shard backed by Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz 1GB)
 
 Python networkx
 35:
@@ -83,3 +97,4 @@ Kotlin deferred
 
 Kotlin seq
 35:
+
