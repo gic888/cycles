@@ -12,10 +12,10 @@ On hub
 
 Python networkx
 
-graph20: 0m0.681s
+graph20: 0m0.681s (89)
 graph30: 0m0.524s (2224)
 graph35: 4m20.716s (6973630)
-
+graph37: 7m44.941s (10251413)
 graph40: segfault
 
 
@@ -23,7 +23,19 @@ Python naive
 
 graph20: 0m0.064s
 graph30: 0m0.120s
-graph35:
+graph35: 8m3.206s
+graph37:
 
-Kotlin
-graph35: 	1m9.853s
+Kotlin (sequence builder)
+graph20: 0m1.569s
+graph30: 0m1.706s
+graph35: 0m51.490s
+graph37: 0m31.263s (10251413)
+graph40: > 50 min
+
+Kotlin (channels)
+graph20: 0m1.860s
+graph30: 0m1.945s
+graph35:
+graph37:
+graph40:

@@ -74,7 +74,7 @@ if __name__ == '__main__':
     else:
         n = '20'
     g = read_adjacency('../data/graph' + n + '.adj')
-    cycles = list(find_all_cycles(g))
-    print(len(cycles))
-    # for x in sorted(cycles):
-    #    print(" ".join(x))
+    i = 0
+    for c in find_all_cycles(g):
+        i += 1
+    print(i)

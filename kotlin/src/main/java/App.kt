@@ -1,3 +1,8 @@
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.channels.Channel
+import kotlinx.coroutines.experimental.channels.count
+import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import java.io.File
 import kotlin.coroutines.experimental.SequenceBuilder
@@ -11,10 +16,44 @@ object App {
     fun main(args: Array<String>) = runBlocking<Unit> {
         val n = if (args.isNotEmpty()) args[0] else "20"
         val graph = readGraph("../data/graph$n.adj")
-        println(countCycles(graph))
+        println(countCyclesChannel(graph))
+    }
+
+    suspend fun countCyclesChannel(graph: Graph): Int {
+        val channel = Channel<List<ID>>(50)
+        findCyclesChannel(graph, channel)
+        return channel.count()
     }
 
     suspend fun countCycles(graph: Graph): Int = findCycles(graph).count()
+}
+
+
+suspend fun findCyclesChannel(graph: Graph, channel: Channel<List<ID>>) {
+    val jobs = graph.vertices().map { async { findCyclesChannel(listOf(it), graph, channel) } }
+    launch {
+        for (job in jobs) {
+            job.join()
+        }
+        channel.close()
+    }
+}
+
+suspend fun findCyclesChannel(path: List<ID>, graph: Graph, channel: Channel<List<ID>>) {
+    if (path.isEmpty()) {
+        return
+    }
+    val jobs = mutableListOf<Deferred<Unit>>()
+    for (tid in graph.edges(path.last())) {
+        if (tid == path.first()) {
+            channel.send(path)
+        } else if (tid > path.first() && !path.contains(tid)) {
+            jobs.add( async { findCyclesChannel(path + listOf(tid), graph, channel) })
+        }
+    }
+    for (job in jobs) {
+        job.join()
+    }
 }
 
 suspend fun findCycles(graph: Graph): Sequence<List<ID>> = buildSequence {
