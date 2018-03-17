@@ -17,8 +17,10 @@ func main() {
 	}
 	var n int
 	if len(os.Args) > 2 && os.Args[2] == "sync" {
+		fmt.Println("sync")
 		n = len(cycles.CyclesSync(g))
 	} else {
+		fmt.Println("goroutines")
 		n = cycles.CountCycles(g)
 	}
 	fmt.Println(n)

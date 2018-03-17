@@ -73,8 +73,16 @@ Kotlin seq
 35: 0m42.462s
 
 Go sync
+20: 0m0.146s
 35: 0m51.016s
 
+Go async (1st try - all goroutines and a monitor channel)
+20:	0m0.188s
+35: terrible
+
+Go async (1 go routine per vertex)
+20: 	0m0.497s
+35: 	0m37.903s
 
 On symbolscope local (linux server  Intel(R) Pentium(R) CPU G2030 @ 3.00GHz  8GB)
 
