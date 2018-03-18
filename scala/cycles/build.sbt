@@ -1,5 +1,8 @@
 import Dependencies._
 
+mainClass in assembly := Some("cycles.Main")
+
+
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
