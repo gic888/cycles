@@ -19,6 +19,7 @@ graph37: 7m44.941s (10251413)
 graph40: segfault
 
 
+
 Python naive
 
 graph20: 0m0.064s
