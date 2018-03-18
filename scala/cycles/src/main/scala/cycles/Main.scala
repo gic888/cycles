@@ -2,7 +2,8 @@ package cycles
 
 import scala.io.Source
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
 
 object Main extends CycleDetector {
   def main(args: Array[String]): Unit = {
@@ -16,9 +17,10 @@ trait CycleDetector {
     val fn = s"../../data/graph$n.adj"
     val g = MapGraph.read(fn)
     val mode = if (args.length > 1) args(1) else "future"
+    println(mode)
     mode match {
       case "sync" => countCyclesSync(g)
-      case _ => countCycle(g)
+      case _ => countCycles(g)
     }
   }
 
@@ -26,15 +28,21 @@ trait CycleDetector {
     graph.vertices().map(v => findCycles(Seq(v), graph).count(z => true)).sum
 
 
-  def countCycle(graph: Graph): Int = {
+  def countCycles(graph: Graph): Int = {
     val futures = graph.vertices().map(v => Future {
       findCycles(Seq(v), graph)
     })
-    futures.map( f => f.value )
-      .filter( t => t.nonEmpty)
-      .map( _.get )
-      .filter( _.isSuccess )
-      .map( _.get.count( z => true) )
+    /*
+    var n = 0
+    for (f <-futures) {
+      val v = Await.result(f, 5 minutes)
+      println(s"got ${v.size} values")
+      n = n + v.size
+    }
+    n
+    */
+    futures.map( f => Await.result(f, 2 minutes) )
+      .map( _.count( z => true) )
       .sum
   }
 
