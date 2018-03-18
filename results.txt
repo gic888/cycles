@@ -84,6 +84,15 @@ Go async (1 go routine per vertex)
 20: 	0m0.497s
 35: 	0m37.903s
 
+Scala sync
+20:
+35:
+
+Scala async
+20: 0m0.505s (requires assembly + java -jar. SBT has high overhead)
+35:
+
+
 On symbolscope local (linux server  Intel(R) Pentium(R) CPU G2030 @ 3.00GHz  8GB)
 
 Python networkx
