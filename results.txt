@@ -39,6 +39,16 @@ graph37: 0m33.571s
 Kotlin (using deferred rather than callable)
 graph37: 0m34.971s
 
+Go Sync
+20: 0m0.335s
+35: 0m53.051s
+
+Go GoRoutines
+20: 0m0.577s
+35: 0m39.169s
+
+many attempts to improve go failed
+
 Scala Sync
 20: 0m0.743s
 35: 0m40.640s
