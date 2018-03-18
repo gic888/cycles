@@ -18,8 +18,6 @@ graph35: 4m20.716s (6973630)
 graph37: 7m44.941s (10251413)
 graph40: segfault
 
-
-
 Python naive
 
 graph20: 0m0.064s
@@ -34,18 +32,20 @@ graph35: 0m51.490s
 graph37: 0m31.263s (10251413)
 graph40: > 50 min
 
-Kotlin (channels) -- bad implementation
-graph35: hideous (>13m and throws exceptions
-
-Kotlin (async)  -- bad implementation
-graph35: 1m14.727s
-
 Kotlin (Callables)
 grahp35: 0m33.511s
 graph37: 0m33.571s
 
 Kotlin (using deferred rather than callable)
 graph37: 0m34.971s
+
+Scala Sync
+20: 0m0.743s
+35: 0m40.640s
+
+Scala Futures
+20: 0m0.742s
+35: 0m27.729s
 
 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
@@ -76,10 +76,6 @@ Kotlin seq
 Go sync
 20: 0m0.146s
 35: 0m51.016s
-
-Go async (1st try - all goroutines and a monitor channel)
-20:	0m0.188s
-35: terrible
 
 Go async (1 go routine per vertex)
 20: 	0m0.497s
@@ -116,3 +112,16 @@ Kotlin deferred
 Kotlin seq
 35:
 
+
+Discarded implementations:
+
+
+Kotlin (channels) -- bad implementation
+graph35: hideous (>13m and throws exceptions
+
+Kotlin (async)  -- bad implementation
+graph35: 1m14.727s
+
+Go async (1st try - all goroutines and a monitor channel)
+20:	0m0.188s
+35: terrible

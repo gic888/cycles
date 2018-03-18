@@ -1,5 +1,6 @@
 package cycles
 
+import scala.collection.immutable.HashMap
 import scala.io.Source
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Await, Future}
@@ -13,10 +14,10 @@ object Main extends CycleDetector {
 
 trait CycleDetector {
   def countCycles(args: Array[String]): Int = {
-    val n = if (args.length > 0) args(0) else "20"
+    val n = if (args.length > 0) args(0) else "35"
     val fn = s"../../data/graph$n.adj"
     val g = MapGraph.read(fn)
-    val mode = if (args.length > 1) args(1) else "future"
+    val mode = if (args.length > 1) args(1) else "futures"
     println(mode)
     mode match {
       case "sync" => countCyclesSync(g)
@@ -25,38 +26,39 @@ trait CycleDetector {
   }
 
   def countCyclesSync(graph: Graph): Int =
-    graph.vertices().map(v => findCycles(Seq(v), graph).count(z => true)).sum
+    graph.vertices().map(v => countCycles(Path.root(v, graph))).sum
 
 
   def countCycles(graph: Graph): Int = {
     val futures = graph.vertices().map(v => Future {
-      findCycles(Seq(v), graph)
+      countCycles(Path.root(v, graph))
     })
-    /*
-    var n = 0
-    for (f <-futures) {
-      val v = Await.result(f, 5 minutes)
-      println(s"got ${v.size} values")
-      n = n + v.size
-    }
-    n
-    */
     futures.map( f => Await.result(f, 2 minutes) )
-      .map( _.count( z => true) )
       .sum
   }
 
+  def countCycles(path: Path): Int = path.continuesTo().map(tid =>
+    if (tid == path.start) 1
+    else if (tid > path.start && !path.seq.contains(tid)) countCycles(path.and(tid))
+    else 0).sum
 
-  def findCycles(path: Seq[String], graph: Graph): Seq[Seq[String]] = {
-    if (path.isEmpty) {
-      return Seq()
-    }
-    graph.edges(path.last).flatMap( tid =>
-      if (tid == path.head) Seq(path)
-      else if (tid > path.head && !path.contains(tid)) findCycles(path :+ tid, graph)
+  def findCycles(path: Path): Seq[Path] = {
+    path.continuesTo().flatMap( tid =>
+      if (tid == path.start) Seq(path)
+      else if (tid > path.start && !path.seq.contains(tid)) findCycles(path.and(tid))
       else Seq()
     )
   }
+}
+
+case class Path(start: String, seq: Map[String, Int], end: String, graph: Graph) {
+  def continuesTo(): Seq[String] = graph.edges(end)
+
+  def and(step: String): Path = Path(start, seq + (step -> seq.size), step, graph)
+}
+
+object Path {
+  def root(start: String, graph: Graph): Path = Path(start, HashMap(), start, graph)
 }
 
 trait Graph {
