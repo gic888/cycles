@@ -60,6 +60,9 @@ Scala Futures
 rust sync 
 35: 0m24.002s
 
+rust threads
+35: 0m16.283s
+
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
 Python networkx

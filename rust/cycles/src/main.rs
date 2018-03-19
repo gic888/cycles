@@ -6,7 +6,10 @@ use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
+use std::thread;
+use std::sync::mpsc;
 
+#[derive(Clone)]
 struct Graph {
     data: HashMap<i32, Vec<i32>>,
     empty: Vec<i32>
@@ -80,7 +83,7 @@ fn main() {
     let ref mode = if args.len() > 2 {
         &args[2]
     } else {
-        "sync"
+        "async"
     };
     let path = format!("../../data/graph{}.adj", n);
     let graph = Graph::read(path);
@@ -101,6 +104,24 @@ fn find_cycles_sync(graph: Graph) {
 
 fn find_cycles(graph: Graph) {
     println!("graph size {}", graph.size());
+    let keys = graph.data.keys();
+    let (tx, rx) = mpsc::channel();
+    for k in keys {
+        let txc = mpsc::Sender::clone(&tx);
+        let gc = Graph::clone(&graph);
+        let kc=*k;
+        thread::spawn(move || {
+            let nc = count_cycles_from(vec![&kc], &gc);
+            txc.send(nc).unwrap();
+        });
+    }
+    let mut n = 0;
+    let mut reads = 0;
+    while reads < graph.size() {
+        n = n + rx.recv().unwrap();
+        reads += 1
+    }
+    println!("found {} cycles", n);
 }
 
 fn count_cycles_from(path: Vec<&i32>, graph: &Graph) -> i32 {
