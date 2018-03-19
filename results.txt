@@ -57,6 +57,8 @@ Scala Futures
 20: 0m0.742s
 35: 0m27.729s
 
+rust sync 
+35: 0m24.002s
 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
