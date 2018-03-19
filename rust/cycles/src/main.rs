@@ -16,10 +16,10 @@ impl Graph {
     fn read(file: String) -> Graph {
         env_logger::init();
         let mut data = HashMap::new();
-        let f = match File::open(file) {
+        let f = match File::open(&file) {
             Ok(v) => v,
             Err(_e) => {
-                error!("failed to load file");
+                error!("failed to load file {}", file);
                 return Graph { data };
             }
         };
@@ -63,17 +63,17 @@ fn read_int(s: &str) -> i32 {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let ref n = if args.len() > 0 {
-        &args[0]
+    let ref n = if args.len() > 1 {
+        &args[1]
     } else {
         "20"
     };
-    let ref mode = if args.len() > 1 {
-        &args[1]
+    let ref mode = if args.len() > 2 {
+        &args[2]
     } else {
         "async"
     };
-    let path = format!("../../../data/graph{}.adj", n);
+    let path = format!("../../data/graph{}.adj", n);
     let graph = Graph::read(path);
     match mode {
         &"sync" => find_cycles_sync(graph),
