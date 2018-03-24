@@ -28,26 +28,39 @@
   )
 
 
+(defn string_lt
+  [s1 s2]
+  (< (compare s1 s2) 0)
+  )
+
+(defn should_continue
+  [path e]
+  (not (or (string_lt e (first path)) (some #{e} path)))
+  )
+
 (defn count_cycles_in_path
   [path, edges]
-  (reduce + (map
-              (fn [e]
-                (if (== e (first path))
-                  1 (if (not (or (< e (first path)) (contains? path e)))
-                      (count_cycles_in_path (conj path e) edges) 0
-                      )
-                  ))
-              (apply edges (last path))
+  (reduce +
+          (map
+            (fn [e]
+              (if (= e (first path))
+                1 (if (should_continue path e) (count_cycles_in_path (conj path e) edges) 0)
+                )
               )
+            (edges (last path)))
           )
   )
+
+
 
 
 
 (defn count_cycles_sync
   [^Graph g]
   (let [edges (fn [x] (get (:data g) x))]
-    (reduce + (map (fn [v] count_cycles_in_path ([v], edges)) (keys (:data g))))
+    (let [ns (map (fn [v] (count_cycles_in_path [v], edges)) (keys (:data g)))]
+      (reduce + ns)
+      )
     )
   )
 
@@ -71,3 +84,4 @@
       )
     )
   )
+
