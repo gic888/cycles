@@ -67,6 +67,12 @@ Julia sync
 20: 0m0.753s
 35: 4m50.854s
 
+Clojure sync
+35:
+
+Clojure reducer
+35:
+
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
 Python networkx

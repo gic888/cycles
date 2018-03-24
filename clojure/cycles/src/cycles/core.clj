@@ -1,9 +1,12 @@
 (ns cycles.core
   (:gen-class))
 
+(require '[clojure.core.reducers :as r])
 (use '[clojure.string :only (split starts-with? blank?)])
 
 (defrecord Graph [data])
+
+(defrecord Path [start stop middle])
 
 (defn usable_line [l] (not (or (blank? l) (starts-with? l "#"))))
 
@@ -35,7 +38,14 @@
 
 (defn should_continue
   [path e]
-  (not (or (string_lt e (first path)) (some #{e} path)))
+  (not (or (string_lt e (:start path)) ((:middle path) e)))
+  )
+
+
+(defn path_with
+  [path e]
+  (Path. (:start path) e (conj (:middle path) e))
+
   )
 
 (defn count_cycles_in_path
@@ -43,11 +53,11 @@
   (reduce +
           (map
             (fn [e]
-              (if (= e (first path))
-                1 (if (should_continue path e) (count_cycles_in_path (conj path e) edges) 0)
+              (if (= e (:start path))
+                1 (if (should_continue path e) (count_cycles_in_path (path_with path e) edges) 0)
                 )
               )
-            (edges (last path)))
+            (edges (:stop path)))
           )
   )
 
@@ -58,7 +68,7 @@
 (defn count_cycles_sync
   [^Graph g]
   (let [edges (fn [x] (get (:data g) x))]
-    (let [ns (map (fn [v] (count_cycles_in_path [v], edges)) (keys (:data g)))]
+    (let [ns (map (fn [v] (count_cycles_in_path (Path. v v #{}), edges)) (keys (:data g)))]
       (reduce + ns)
       )
     )
@@ -66,7 +76,11 @@
 
 (defn count_cycles
   [^Graph g]
-  2
+
+  (let [edges (fn [x] (get (:data g) x))]
+    (let [ns (map (fn [v] (count_cycles_in_path (Path. v v #{}), edges)) (keys (:data g)))]
+      (r/fold + ns)
+      ))
   )
 
 
@@ -77,7 +91,7 @@
     (let [nargs (count args)]
       (let [
             g (read_graph (str "../../data/graph" (if (> nargs 0) (first args) "20") ".adj"))
-            async (if (> nargs 1) (== (second args) "sync") false)
+            async (if (> nargs 1) (= (second args) "async") false)
             ]
         (if async (count_cycles g) (count_cycles_sync g))
         )
