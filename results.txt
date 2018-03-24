@@ -68,7 +68,7 @@ Julia sync
 35: 4m50.854s
 
 Clojure sync
-35:
+35: 2m58.713s
 
 Clojure reducer
 35:
