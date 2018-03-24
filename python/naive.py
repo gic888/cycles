@@ -1,4 +1,6 @@
 
+import pytest
+
 class DiGraph:
     def __init__(self):
         self.v = {}
@@ -65,6 +67,12 @@ def read_adjacency(filename):
         for id in ids[1:]:
             graph.add_edge(ids[0], id)
     return graph
+
+
+def test_read_adjacency():
+    g = read_adjacency("../data/graph20.adj")
+    l = [v for v in g.vertices()]
+    assert len(l) == 20
 
 
 if __name__ == '__main__':
