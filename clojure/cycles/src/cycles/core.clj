@@ -61,10 +61,6 @@
           )
   )
 
-
-
-
-
 (defn count_cycles_sync
   [^Graph g]
   (let [edges (fn [x] (get (:data g) x))]
@@ -82,7 +78,6 @@
       (r/fold + ns)
       ))
   )
-
 
 (defn -main
   "I don't do a whole lot ... yet."
