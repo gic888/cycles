@@ -1,6 +1,10 @@
 module Lib
-    ( someFunc
+    ( readGraph, countCycles
     ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+
+readGraph content = putStrLn "someFunky"
+
+countCycles graph = putStrLn "wat"
+
+
