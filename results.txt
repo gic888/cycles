@@ -79,6 +79,11 @@ Haskell (naive list Elem, single thread)
 Haskell (set, single thread)
 35: 1m1.490s
 
+OCaml (set, single thread)
+35: 1m37.894s
+NEVER WRITE OCAML. IT'S HORRIBLE. IT CAN NEVER BE WORTH IT!!!!! 
+YOU KNEW THIS WAS TRUE LAST TIME YOU DID THIS. DON'T MAKE THIS MISTAKE AGAIN
+
 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
