@@ -1,0 +1,18 @@
+Name: cycles
+Version: 0.1
+Synopsis: comparison benchmark that counts simple cycles in directed graphs
+Authors: Graham Cummins <gic@lorax.org>
+License: MIT
+
+Description: read python networkx adjacency list graphs, and count all the simple cycles in them 
+Homepage: http://symbolscope.com/noPageYet/soSueMe
+
+OASISFormat: 0.4
+BuildTools: ocamlbuild
+Plugins: META (0.4), DevFiles (0.4)
+
+Executable "cycles"
+  Path: src
+  MainIs: cycles.ml
+  CompiledObject: best
+
