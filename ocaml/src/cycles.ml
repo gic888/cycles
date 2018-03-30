@@ -1,4 +1,2 @@
-let main()=
-    print_string "hi"
-;;
+print_string "hi"
 
