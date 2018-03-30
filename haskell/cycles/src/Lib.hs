@@ -3,12 +3,17 @@ module Lib
     ) where
 
 import qualified Data.Map as M
+import qualified Data.List.Split as S
 
 
 readGraph :: String -> M.Map String [String]
-readGraph content = M.empty
+readGraph content = M.fromList [(head lw, tail lw) |
+  l <- lines content,
+  let lw =  S.splitOn " " l ,
+  length l > 0,
+  head l /= '#']
 
-countCycles :: M.Map String [String] -> Integer
-countCycles graph = 4
+countCycles :: M.Map String [String] -> Int
+countCycles graph = length (M.keys graph)
 
 
