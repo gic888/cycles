@@ -1,6 +1,7 @@
 *.byte
 *.native
 _build
+setup.data
 *.log
 
 
