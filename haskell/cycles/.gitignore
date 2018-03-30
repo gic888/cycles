@@ -1,4 +1,5 @@
 .stack-work/
 cycles.cabal
 out/
+cycles-exe
 *~
