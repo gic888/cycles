@@ -76,6 +76,8 @@ Clojure reducer
 Haskell (naive list Elem, single thread)
 35: 1m58.229s
 
+Haskell (set, single thread)
+35: 1m1.490s
 
 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
