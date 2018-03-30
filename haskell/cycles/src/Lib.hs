@@ -5,7 +5,8 @@ module Lib
 import qualified Data.Map as M
 import qualified Data.List.Split as Spl
 import qualified Data.Set as S
-import Control.Parallel (par) 
+import Control.Parallel (par)
+import Control.Parallel.Strategies (using, rdeepseq)
 
 type Vid = String
 type Graph = M.Map Vid [Vid]
@@ -18,8 +19,8 @@ nextFrom p@ (_, e, _, g) = case M.lookup e g of
 
 pCount :: (Vid -> Int) -> [Vid] -> Int
 pCount f [] = 0
-pCount f (x : xs) =  r `par` r + pCount f xs
-  where r = (f x) `using` rdeepseq
+pCount f (x : xs) = let r = (f x) `using` rdeepseq in
+  r `par` r + pCount f xs
 
 readGraph :: String -> Graph
 readGraph content = M.fromList [(head lw, tail lw) |
