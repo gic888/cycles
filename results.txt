@@ -97,6 +97,14 @@ Dart (web, chrome)
 35: 129.820 sec
 
 
+KotlinJS (web, chrome, sequencebuilder sync)
+35: 319.434 sec
+
+
+KotlinJS (web, chrome, trivial sync)
+35: 312.748 sec
+
+
 
 
 

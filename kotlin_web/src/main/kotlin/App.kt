@@ -1,15 +1,8 @@
-import kotlin.coroutines.experimental.SequenceBuilder
-import kotlin.coroutines.experimental.buildSequence
 import kotlin.js.Date
 
 fun main(args: Array<String>) {
-    println(count(g20))
+    println(count(g35))
 }
-
-
-
-typealias ID = String
-typealias Path = List<ID>
 
 fun count(data: String): String {
     val start = Date().getTime()
@@ -18,47 +11,32 @@ fun count(data: String): String {
     return "Counted $n cycles in $t ms"
 }
 
-fun countCycles(graph: Graph): Int =
-    graph.vertices().map { vid -> buildSequence { findCycles(listOf(vid), graph) }.count()}.sum()
-
-
-suspend fun SequenceBuilder<Path>.findCycles(path: Path, graph: Graph)  {
-    if (path.isEmpty()) {
-        return
-    }
-    for (tid in graph.edges(path.last())) {
-        if (tid == path.first()) {
-            yield(path)
-        } else if (tid > path.first() && !path.contains(tid)) {
-            findCycles(path + listOf(tid), graph)
-        }
-    }
+fun countCycles(graph: Map<String, List<String>>): Int {
+    val edges = { v: String -> graph[v] ?: listOf() }
+    return graph.keys.map { countCyclesFrom(listOf(it), edges) }.sum()
 }
 
-fun readGraph(data: String): Graph {
-    val lines = data.split("\\n")
-    return MapGraph(lines
+fun countCyclesFrom(path: List<String>, edges: (String) -> List<String> ): Int =
+    edges(path[path.size -1]).map { v ->
+        when {
+            v == path[0] -> 1
+            v > path[0] && !path.contains(v) -> countCyclesFrom(path + v, edges)
+            else -> 0
+        }
+    }.sum()
+
+fun readGraph(data: String): Map<String, List<String>> {
+    val lines = data.split("\n")
+    return lines
             .map { it.trim() }
             .filter { !it.startsWith("#") }
             .filter { !it.isEmpty() }
             .map { it.split(Regex("\\s")) }
             .map {
                 it[0] to it.subList(1, it.size)
-            }.toMap())
+            }.toMap()
 }
 
-
-
-interface Graph {
-    fun vertices(): Path
-    fun edges(vertex: ID): Path
-}
-
-class MapGraph(private val vs: Map<ID, Path>): Graph {
-    override fun vertices(): Path = vs.keys.toList()
-
-    override fun edges(vertex: ID): Path = vs[vertex] ?: listOf()
-}
 
 val g20 = """
 0 4 10 19

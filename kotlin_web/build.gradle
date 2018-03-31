@@ -42,7 +42,7 @@ assemble.dependsOn assembleWeb
 
 compileKotlin2Js {
     kotlinOptions.outputFile = "${projectDir}/web/cycles.js"
-    kotlinOptions.moduleKind = "commonjs"
+    kotlinOptions.moduleKind = "umd"
     kotlinOptions.sourceMap = true
 }
 
