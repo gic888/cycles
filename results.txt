@@ -84,6 +84,8 @@ OCaml (set, single thread)
 NEVER WRITE OCAML. IT'S HORRIBLE. IT CAN NEVER BE WORTH IT!!!!! 
 YOU KNEW THIS WAS TRUE LAST TIME YOU DID THIS. DON'T MAKE THIS MISTAKE AGAIN
 
+FSharp (set, single, using Mono)
+35: 3m5.610s
 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
