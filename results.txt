@@ -104,6 +104,9 @@ KotlinJS (web, chrome, sequencebuilder sync)
 KotlinJS (web, chrome, trivial sync)
 35: 312.748 sec
 
+ScalaJS (web, chrome, trivial port of server sync)
+35: 300.154 sec
+
 
 
 
