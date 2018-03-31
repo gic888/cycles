@@ -90,7 +90,8 @@ FSharp (set, single, using Mono)
 Java 8 (ArrayList, Simple Threads)
 35: 0m34.224s
 
-
+Dart (List, Async (maybe not working), CLI with Dart VM)
+35: 1m28.335s
 
 
 
