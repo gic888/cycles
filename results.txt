@@ -87,6 +87,17 @@ YOU KNEW THIS WAS TRUE LAST TIME YOU DID THIS. DON'T MAKE THIS MISTAKE AGAIN
 FSharp (set, single, using Mono)
 35: 3m5.610s
 
+Java 8 (ArrayList, Simple Threads)
+35: 0m34.224s
+
+
+
+
+
+
+
+
+-------------------- Other Machines -------------------------
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
 Python networkx
