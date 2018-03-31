@@ -41,7 +41,8 @@ task assembleWeb(type: Sync) {
 assemble.dependsOn assembleWeb
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/output.js"
+    kotlinOptions.outputFile = "${projectDir}/web/cycles.js"
+    kotlinOptions.moduleKind = "commonjs"
     kotlinOptions.sourceMap = true
 }
 
