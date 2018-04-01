@@ -14,7 +14,7 @@ import Data.Tuple (Tuple(..))
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
-  log "Wat"
+  log (show (countCycles (readGraph (getData 20))))
 
 type Vid = String
 type Vids = Array Vid
@@ -60,7 +60,7 @@ countCyclesFrom :: Path -> Int
 countCyclesFrom p = reduce_sum (\k -> countCyclesAt k p) (nextFrom p)
 
 pathWith :: String -> Path -> Path
-pathWith k p = p { via = M.insert k 1 p.via }
+pathWith k p = p { to = k, via = M.insert k 1 p.via }
 
 countCyclesAt :: Vid -> Path -> Int
 countCyclesAt v p = 

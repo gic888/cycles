@@ -107,7 +107,11 @@ KotlinJS (web, chrome, trivial sync)
 ScalaJS (web, chrome, trivial port of server sync)
 35: 300.154 sec
 
+PureScript (CLI using pulp)
+35: 698.206 sec
 
+PureScript (chrome)
+35: 
 
 
 
