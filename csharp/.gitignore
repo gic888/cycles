@@ -1,4 +1,6 @@
 bin/
+obj/Release/
+obj/netcoreapp2.0/
 .vscode/
 obj/Debug/
 

@@ -125,7 +125,8 @@ Elm (Chrome)
 Swift (XCode)
 35: 202.757822990417 sec 
 
-
+CSharp (dotnet core, on Mac. single thread) 
+35: 145.847 sec
 
 
 

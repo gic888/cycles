@@ -1,13 +1,14 @@
 Languages to add
 
 C
-C#
 Elixer
 
 
 Languages to improve:
 
 Most implementations are not idiomatic
+Some of the recently implemented languages are single thread only, and could be parallel (CSharp, Swift)
+Clojure and Haskell parallel implementations are wrong
 Purescript doesn't return a time when running in browser. 
-Swift is single-threadded, and seems to currently be using a toxic data type
+
 
