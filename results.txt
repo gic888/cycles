@@ -111,7 +111,9 @@ PureScript (CLI using pulp)
 35: 698.206 sec
 
 PureScript (chrome)
-35: 
+35: 498.290
+
+
 
 
 
