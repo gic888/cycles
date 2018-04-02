@@ -122,7 +122,8 @@ TypeScript (Chrome)
 Elm (Chrome)
 35: 405.284 sec
 
-
+Swift (XCode)
+35: 202.757822990417 sec 
 
 
 

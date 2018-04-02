@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 func countCyclesAt(vertex: String, path: Array<String>, graph: Dictionary<String, Array<String>>) -> Int {
     if vertex == path[0] {
         return 1

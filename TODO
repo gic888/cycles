@@ -1,6 +1,13 @@
 Languages to add
 
-Swift
 C
 C#
 Elixer
+
+
+Languages to improve:
+
+Most implementations are not idiomatic
+Purescript doesn't return a time when running in browser. 
+Swift is single-threadded, and seems to currently be using a toxic data type
+
