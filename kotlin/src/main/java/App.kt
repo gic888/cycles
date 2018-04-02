@@ -22,10 +22,13 @@ object App {
         val graph = readGraph("../data/graph$n.adj")
         val mode = if (args.size > 1) args[1] else "deferred"
         println(mode)
-        when (mode) {
-            "sync" -> println(countCyclesSync(graph))
-            else -> println(countCyclesAsync(graph))
+        val start = System.currentTimeMillis()
+        val c = when (mode) {
+            "sync" -> countCyclesSync(graph)
+            else -> countCyclesAsync(graph)
         }
+        val t = System.currentTimeMillis() - start
+        println("found $c cycles in $t ms")
     }
 
     fun countCyclesAsync(graph: Graph): Int = runBlocking {

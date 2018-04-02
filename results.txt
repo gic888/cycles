@@ -128,12 +128,25 @@ Swift (XCode)
 CSharp (dotnet core, on Mac. single thread) 
 35: 145.847 sec
 
+Kotlin sync internal measure (compare to Praxis):
+35: 48.435 sec
+ 
 
 
 
  
 
 -------------------- Other Machines -------------------------
+Praxis (Lenovo X230 i5 with 8GB RAM, running Windows 10)
+ 
+CSharp (dotnet core, on Mac. single thread) 
+35: 156.656 
+
+Kotlin sync:
+35: 60.346 sec
+
+CSharp is 260% slower than Kotlin on this Windows box, compared to 300% slower on Mac
+ 
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)
 
 Python networkx
