@@ -14,7 +14,7 @@ import Data.Tuple (Tuple(..))
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
-  log (show (countCycles (readGraph (getData 20))))
+  log (show (countCycles (readGraph (getData 35))))
 
 type Vid = String
 type Vids = Array Vid
