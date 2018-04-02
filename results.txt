@@ -119,6 +119,9 @@ JavaScript (Chrome. Naive implementation)
 TypeScript (Chrome)
 35: 81.091 sec
 
+Elm (Chrome)
+35: 405.284 sec
+
 
 
 
