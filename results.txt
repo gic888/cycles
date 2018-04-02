@@ -116,8 +116,17 @@ PureScript (chrome)
 JavaScript (Chrome. Naive implementation)
 35: 82.177 sec
 
+TypeScript (Chrome)
+35: 81.091 sec
 
 
+
+
+
+
+
+
+ 
 
 -------------------- Other Machines -------------------------
 On inflection (Linux desktop. Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz, 16GB RAM)

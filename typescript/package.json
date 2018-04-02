@@ -1,0 +1,10 @@
+{
+  "name": "typescript_cycles",
+  "version": "1.0.0",
+  "description": "langugae comparison project using dectection of simple cycles in a directed graph ",
+  "main": "index.js",
+  "repository": "github.com/gic888/cycles",
+  "author": "Graham Cummins",
+  "license": "MIT",
+  "private": true
+}
