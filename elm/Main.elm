@@ -5,6 +5,8 @@ import Dict
 import Time exposing (Time, now)
 import Maybe exposing (..)
 import Task
+import String
+import List
 
 
 main =
@@ -17,6 +19,7 @@ main =
 
 -- DATA
 
+smallGraph: String
 smallGraph = """
 0 4 10 19
 1 0 6 9
@@ -40,6 +43,7 @@ smallGraph = """
 19 1 2 5 8 9 17 18
 """
 
+largeGraph: String
 largeGraph = """
 0 33
 1 2 18 25
@@ -89,12 +93,40 @@ type alias Path = {
     graph: Graph
 }
 
-readGraph : String -> Graph
-readGraph s = Dict.empty
+tuplate: List String -> (String, List String)
+tuplate l = case List.head l of 
+    Just s -> case List.tail l of 
+        Just t -> (s, t)
+        Nothing -> (s, [])
+    Nothing -> ("", [])
 
+readGraph : String -> Graph
+readGraph s = 
+    let l = List.filter (\ss -> not (String.isEmpty ss)) (String.split "\n" s) in 
+    Dict.fromList (List.map tuplate (List.map (\ss -> String.split " " ss) l))
+
+reduce_add : (a -> Int) -> List a -> Int
+reduce_add f l = List.foldl (+) 0 (List.map f l)
+
+root : String -> Graph -> Path
+root v g = {start = v, stop = v, path = Set.empty, graph = g}
+
+nextFrom : Path -> List String 
+nextFrom p = case (Dict.get p.stop p.graph) of 
+    Just l -> l
+    Nothing -> []
+
+countCyclesAt : String -> Path -> Int
+countCyclesAt v p = 
+    if (v == p.start) then 1
+    else if (v > p.start && not (Set.member v p.path)) then countCyclesFrom {p | stop = v, path = Set.insert v p.path}
+    else 0
+
+countCyclesFrom : Path -> Int
+countCyclesFrom p = reduce_add (\v -> countCyclesAt v p) (nextFrom p)
 
 countCycles : Graph -> Int
-countCycles g = Dict.size g
+countCycles g = reduce_add (\v -> countCyclesFrom (root v g)) (Dict.keys g)
 
 -- MODEL
 
