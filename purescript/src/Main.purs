@@ -8,13 +8,19 @@ import Control.MonadZero (guard)
 import Data.Array as A
 import Data.Maybe (Maybe(..))
 import Data.StrMap as M
+import Control.Monad.Eff.Now as Now
 import Data.String (Pattern(..), split, charAt)
 import Data.Tuple (Tuple(..))
 
 
+
+
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
-  log (show (countCycles (readGraph (getData 35))))
+  let start = Now.now
+  let n = countCycles (readGraph (getData 35))
+  let stop = Now.now
+  log (show n)
 
 type Vid = String
 type Vids = Array Vid
