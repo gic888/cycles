@@ -130,7 +130,13 @@ CSharp (dotnet core, on Mac. single thread)
 
 Kotlin sync internal measure (compare to Praxis):
 35: 48.435 sec
- 
+
+C (naive, single threaded, gcc -O3):
+35: 42.400 sec 
+
+
+
+
 
 
 
