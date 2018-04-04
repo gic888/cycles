@@ -2,52 +2,31 @@
 #include <time.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <sys/param.h>
 
 
-int get_edges_from(int* edges, int vertex, int n, int*data) {
-    int loc = vertex * n; // starting location for data about the vertex;
-    int val = data[loc];
-    int index = 0;
-    while (val >= 0 && index < n) {
-        edges[index] = val;
-        index++;
-        loc++;
-        val = data[loc];
-    }
-    return index;
-}
-
-int path_does_not_cross(int vertex, int path_length, int* path) {
-    // count_cycles at already checked path[0],
-    // we don't need to check path[-1] because these graphs don't have self edges
-    for (int i = 1; i < path_length -1; i++) {
-        if (vertex == path[i]) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int count_cycles_at(int path_length, int* path, int n, int* data) {
-    int next, i, j;
+int count_cycles_at(int start, int end, unsigned long long path, int n, int* data) {
+    int next;
     int count = 0;
-    int* edges = malloc(n * sizeof(int));
-    int* newpath = malloc( (path_length + 1) * sizeof(int));
-    int n_edges = get_edges_from(edges, path[path_length - 1], n, data);
-    for (i = 0; i < n_edges; i++) {
-        next = edges[i];
-        if (next == path[0]) {
+    unsigned long long mask;
+    unsigned long long masked;
+    int loc = end * n; // starting location for data about the vertex;
+    next = data[loc];
+    while (next >= 0 && loc < n*n) {
+        if (next == start) {
             count++;
-        } else if (next > path[0] && path_does_not_cross(next, path_length, path)) {
-            for (j = 0; j < path_length; j++) {
-                newpath[j] = path[j];
+        } else if (next > start) {
+            masked = 1;
+            mask =  masked << (next);
+            masked = mask & path;
+            if (masked == 0) {
+                masked = path | mask;
+                count += count_cycles_at(start, next, masked, n, data);
             }
-            newpath[path_length] = next;
-            count = count + count_cycles_at(path_length + 1, newpath, n, data);
         }
+        loc++;
+        next = data[loc];
     }
-    free(edges);
-    free(newpath);
     return count;
 }
 
@@ -55,7 +34,7 @@ int count_cycles(int n, int* data) {
     int i, c;
     c = 0;
     for (i = 0; i < n; i++) {
-        c += count_cycles_at(1, &i, n, data);
+        c += count_cycles_at(i, i, 0, n, data);
     }
     return c;
 }
@@ -97,7 +76,7 @@ void read_graph(char* fn, int n, int* data) {
 }
 
 int main(int argc, const char* argv[]) {
-    const int n = atoi(argc > 1 ? argv[1] : "20");
+    const int n = atoi(argc > 1 ? argv[1] : "35");
     char fn[100];
     sprintf(fn, "/Users/gic/code/cycles/data/graph%d.adj", n);
     time_t start = time(0);
