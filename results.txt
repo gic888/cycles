@@ -136,9 +136,11 @@ C (naive, using arrays, single threaded, gcc -O3):
 
 C (absurd bitmasking, that only works for graphs with < 64 vertices, gcc -03)
 35: 1.696s
+40: 435s (2584635746 cycles)
 
 Rust (async, using the absurd bitmask trick)
 35: 2.664s
+40: 651.379 (2584635746 cycles confirmed) 
 
 Rust (sync, bitmask)
 35: 4.328 ms
