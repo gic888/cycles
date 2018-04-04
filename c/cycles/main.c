@@ -5,11 +5,10 @@
 #include <sys/param.h>
 
 
-int count_cycles_at(int start, int end, unsigned long long path, int n, int* data) {
+unsigned long long count_cycles_at(int start, int end, unsigned long long path, int n, int* data) {
     int next;
-    int count = 0;
-    unsigned long long mask;
-    unsigned long long masked;
+    unsigned long long count, mask, masked;
+    count = 0;
     int loc = end * n; // starting location for data about the vertex;
     next = data[loc];
     while (next >= 0 && loc < n*n) {
@@ -30,9 +29,9 @@ int count_cycles_at(int start, int end, unsigned long long path, int n, int* dat
     return count;
 }
 
-int count_cycles(int n, int* data) {
-    int i, c;
-    c = 0;
+unsigned long long count_cycles(int n, int* data) {
+    int i;
+    unsigned long long c = 0;
     for (i = 0; i < n; i++) {
         c += count_cycles_at(i, i, 0, n, data);
     }
@@ -85,9 +84,9 @@ int main(int argc, const char* argv[]) {
         data[i] = -1; // -1 is used as a terminator throughout
     }
     read_graph(fn, n, data);
-    int cycles = count_cycles(n, data);
+    unsigned long long cycles = count_cycles(n, data);
     time_t stop = time(0);
     free(data);
-    printf("Found %d cycles in %d sec\n", cycles, stop - start);
+    printf("Found %llu cycles in %ld sec\n", cycles, stop - start);
     return 0;
 }
