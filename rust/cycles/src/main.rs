@@ -8,6 +8,7 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use std::thread;
 use std::sync::mpsc;
+use std::time::{SystemTime};
 
 #[derive(Clone)]
 struct Graph {
@@ -83,27 +84,32 @@ fn main() {
     let ref mode = if args.len() > 2 {
         &args[2]
     } else {
-        "async"
+        "cheese"
     };
+    let start = SystemTime::now();
     let path = format!("../../data/graph{}.adj", n);
     let graph = Graph::read(path);
-    match mode {
-        &"sync" => find_cycles_sync(graph),
-        _ => find_cycles(graph)
-    }
-}
-
-fn find_cycles_sync(graph: Graph) {
-    println!("graph size {}", graph.size());
-    let mut n = 0;
-    for k in graph.data.keys() {
-        n = n + count_cycles_from(vec![k], &graph);
+    println!("graph size {}. Mode {}", graph.size(), mode);
+    let n: i64 = match mode {
+        &"sync" => find_cycles_sync(graph, false),
+        &"sync_cheese" => find_cycles_sync(graph, true),
+        &"cheese" => find_cycles(graph, true),
+        _ => find_cycles(graph, false)
     };
-    println!("found {} cycles", n);
+    let t = SystemTime::now().duration_since(start).expect("time passes");
+    let ms = t.as_secs() * 1000 + t.subsec_nanos() as u64 / 1_000_000;
+    println!("found {} cycles in {} ms", n, ms);
 }
 
-fn find_cycles(graph: Graph) {
-    println!("graph size {}", graph.size());
+fn find_cycles_sync(graph: Graph, extra_cheese: bool) -> i64 {
+    let mut n: i64 = 0;
+    for k in graph.data.keys() {
+        n = n + count_starting_at(*k, &graph, extra_cheese);;
+    };
+    return n;
+}
+
+fn find_cycles(graph: Graph, extra_cheese: bool) -> i64 {
     let keys = graph.data.keys();
     let (tx, rx) = mpsc::channel();
     for k in keys {
@@ -111,21 +117,30 @@ fn find_cycles(graph: Graph) {
         let gc = Graph::clone(&graph);
         let kc=*k;
         thread::spawn(move || {
-            let nc = count_cycles_from(vec![&kc], &gc);
+            let nc = count_starting_at(kc, &gc, extra_cheese);
             txc.send(nc).unwrap();
         });
     }
-    let mut n = 0;
+    let mut n: i64 = 0;
     let mut reads = 0;
     while reads < graph.size() {
         n = n + rx.recv().unwrap();
         reads += 1
     }
-    println!("found {} cycles", n);
+    return n;
 }
 
-fn count_cycles_from(path: Vec<&i32>, graph: &Graph) -> i32 {
-    let mut n = 0;
+fn count_starting_at(vertex: i32, graph: &Graph,  extra_cheese: bool) -> i64 {
+    if extra_cheese {
+        return count_cycles_c_style(vertex, vertex, 0, graph);
+    } else {
+        return count_cycles_from(vec![&vertex], graph);
+    }
+
+}
+
+fn count_cycles_from(path: Vec<&i32>, graph: &Graph) -> i64 {
+    let mut n: i64 = 0;
     let end: i32 = *path[path.len() - 1];
     let start: i32 = *path[0];
     for tid in graph.edges(end) {
@@ -138,6 +153,23 @@ fn count_cycles_from(path: Vec<&i32>, graph: &Graph) -> i32 {
         };
     };
     n
+}
+
+fn count_cycles_c_style(start: i32, end: i32, path_mask: u64, graph: &Graph) -> i64 {
+    let mut count: i64 = 0;
+    for tid in graph.edges(end) {
+        let target = *tid;
+        if target == start {
+            count += 1;
+        } else if target > start {
+            let target_mask: u64 = 1 << target;
+            let in_path = path_mask & target_mask;
+            if in_path == 0 {
+                count += count_cycles_c_style(start, target, path_mask | target_mask, graph);
+            }
+        }
+    }
+    return count;
 }
 
 
