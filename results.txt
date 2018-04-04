@@ -143,8 +143,11 @@ Rust (async, using the absurd bitmask trick)
 40: 651.379 (2584635746 cycles confirmed) 
 
 Rust (sync, bitmask)
-35: 4.328 ms
+35: 4.328 s
 
+Kotlin (async, bitmask)
+35: 3.88 s
+40: 732.601
 
 
 
