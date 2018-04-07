@@ -1,7 +1,6 @@
 (ns cycles.core
   (:gen-class))
 
-(require '[clojure.core.reducers :as r])
 (use '[clojure.string :only (split starts-with? blank?)])
 
 (defrecord Graph [data])
@@ -10,9 +9,10 @@
 
 (defn usable_line [l] (not (or (blank? l) (starts-with? l "#"))))
 
-(defn line_head_tail_pair [line]
+(defn line_head_tail_pair
+  [line]
   (let [l (split line #"\s")]
-    [(first l) (vec (next l))]
+    [(read-string  (first l)) (vec (map read-string (next l)))]
     )
   )
 
@@ -31,22 +31,21 @@
   )
 
 
-(defn string_lt
-  [s1 s2]
-  (< (compare s1 s2) 0)
+(defn contained_in
+  [mask e]
+  (> (bit-and mask (bit-shift-left 1 e)) 0)
   )
 
 (defn should_continue
   [path e]
-  (not (or (string_lt e (:start path)) ((:middle path) e)))
+  (not (or (< e (:start path)) (contained_in (:middle path) e)))
   )
 
 
 (defn path_with
   [path e]
-  (Path. (:start path) e (conj (:middle path) e))
-
-  )
+  (Path. (:start path) e (bit-or (:middle path) (bit-shift-left 1 e)))
+)
 
 (defn count_cycles_in_path
   [path, edges]
@@ -61,21 +60,12 @@
           )
   )
 
-(defn count_cycles_sync
-  [^Graph g]
-  (let [edges (fn [x] (get (:data g) x))]
-    (let [ns (map (fn [v] (count_cycles_in_path (Path. v v #{}), edges)) (keys (:data g)))]
-      (reduce + ns)
-      )
-    )
-  )
-
 (defn count_cycles
   [^Graph g]
 
   (let [edges (fn [x] (get (:data g) x))]
-    (let [ns (map (fn [v] (count_cycles_in_path (Path. v v #{}), edges)) (keys (:data g)))]
-      (r/fold + ns)
+    (let [ns (map (fn [v] (count_cycles_in_path (Path. v v 0), edges)) (keys (:data g)))]
+      (reduce + ns)
       ))
   )
 
@@ -86,9 +76,8 @@
     (let [nargs (count args)]
       (let [
             g (read_graph (str "../../data/graph" (if (> nargs 0) (first args) "20") ".adj"))
-            async (if (> nargs 1) (= (second args) "async") false)
             ]
-        (if async (count_cycles g) (count_cycles_sync g))
+        (count_cycles g)
         )
       )
     )

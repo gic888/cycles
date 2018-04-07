@@ -149,7 +149,8 @@ Kotlin (async, bitmask)
 35: 3.88 s
 40: 732.601
 
-
+Elixir (naive single threaded using mix run)
+35: 72.502 sec
 
 
 
